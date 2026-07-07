@@ -1,0 +1,12 @@
+.lake/
+
+build/
+
+*.olean
+
+*.ilean
+
+*.trace
+
+.DS_Store
+

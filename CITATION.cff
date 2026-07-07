@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+
+message: "If you use this formalization, please cite it."
+
+title: "Lean Verification of Cross-Impact No-Price-Manipulation"
+
+type: software
+
+authors:
+
+  - family-names: "Cadotte"
+
+    given-names: "Andrew"
+
+version: 1.0.0
+
+date-released: 2026-07-07
+
+repository-code: "https://github.com/cadottea/lean-cross-impact-no-price-manipulation"
+
+license: Apache-2.0
+
+keywords:
+
+  - Lean 4
+
+  - formal verification
+
+  - mathematical finance
+
+  - market impact
+
+  - no-price-manipulation
+
+  - martingale
+
+  - predictable strategy
+
