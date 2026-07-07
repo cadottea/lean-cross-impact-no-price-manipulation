@@ -1,5 +1,7 @@
 # Lean Verification of Cross-Impact No-Price-Manipulation
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21250432.svg)](https://doi.org/10.5281/zenodo.21250432)
+
 This repository contains a machine-checked Lean 4 development of
 
 no-price-manipulation results for a cross-impact market model.
