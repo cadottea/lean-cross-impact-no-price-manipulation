@@ -296,11 +296,11 @@ work.
 
 For a finite approximation, a practitioner can check that:
 
-- every decay rate is positive;
+- every decay rate is positive
 
-- every operator-valued mode coefficient is positive semidefinite;
+- every operator-valued mode coefficient is positive semidefinite
 
-- the mixture weights are nonnegative;
+- the mixture weights are nonnegative
 
 - the resulting integrals satisfy the required finiteness assumptions.
 
