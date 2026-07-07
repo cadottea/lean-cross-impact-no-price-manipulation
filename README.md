@@ -30,17 +30,17 @@ related assets. This phenomenon is known as cross-impact.
 
 Cross-impact models appear in:
 
-- multi-asset optimal execution;
+- multi-asset optimal execution
 
-- transaction-cost modeling;
+- transaction-cost modeling
 
-- portfolio liquidation;
+- portfolio liquidation
 
-- market simulation;
+- market simulation
 
-- execution-algorithm design;
+- execution-algorithm design
 
-- calibration of transient impact kernels;
+- calibration of transient impact kernels
 
 - theoretical studies of market stability and admissibility.
 
@@ -74,7 +74,7 @@ At a high level, the proof proceeds as follows:
 
 4. Extend the result to finite positive mixtures of exponential modes.
 
-5. represent a power-law kernel as a positive continuous mixture of
+5. Represent a power-law kernel as a positive continuous mixture of
 
    exponentials through an exact Gamma/Laplace identity.
 
@@ -130,7 +130,7 @@ out negative-cost round trips.
 
 The converse shows that when this condition fails, one can construct:
 
-- a negative compressed witness;
+- a negative compressed witness
 
 - a corresponding negative-cost round trip; and
 
@@ -152,9 +152,9 @@ inspection. Instead, it derives the result through a structural
 
 representation:
 
-- positive exponential modes are individually admissible;
+- positive exponential modes are individually admissible
 
-- positive finite mixtures remain admissible;
+- positive finite mixtures remain admissible
 
 - the power-law kernel is represented as a positive continuous exponential
 
@@ -176,23 +176,23 @@ proof in another notation.
 
 Lean checks that:
 
-- every hypothesis is explicit;
+- every hypothesis is explicit
 
-- all dimensions and types match;
+- all dimensions and types match
 
-- positivity assumptions are used where required;
+- positivity assumptions are used where required
 
-- finite-mixture and continuous-mixture arguments compose correctly;
+- finite-mixture and continuous-mixture arguments compose correctly
 
-- the Gamma/Laplace identity is connected to the impact functional;
+- the Gamma/Laplace identity is connected to the impact functional
 
-- the martingale bridge includes the necessary measurability assumptions;
+- the martingale bridge includes the necessary measurability assumptions
 
-- all required products are integrable;
+- all required products are integrable
 
-- the converse constructs an actual negative-cost witness;
+- the converse constructs an actual negative-cost witness
 
-- the final theorem depends only on the declared assumptions;
+- the final theorem depends only on the declared assumptions
 
 - no proof placeholders or custom logical axioms are present.
 
@@ -238,19 +238,159 @@ families, richer stochastic-process interfaces, and a larger formalized
 
 library for market-impact mathematics.
 
+## How a market practitioner can use this result
+
+The repository is not a production execution system, but its theorems provide
+
+a practical model-governance framework for researchers, quantitative
+
+developers, execution teams, and model-risk reviewers.
+
+A practitioner evaluating a proposed cross-impact model can use the result in
+
+the following sequence.
+
+### 1. Identify the round-trip cost operator
+
+Write the model's transient impact contribution as an operator acting on the
+
+trading-rate path. Restrict attention to round trips, meaning strategies whose
+
+net inventory change is zero.
+
+For the formalized linear model, the relevant question is whether the
+
+symmetric part of the compressed cost operator is positive semidefinite on
+
+that zero-net-flow subspace.
+
+### 2. Test the exact linear criterion
+
+The declaration
+
+    no_negative_roundTrip_iff_compressed_positive
+
+states the exact criterion for the formalized linear stage.
+
+This gives a model reviewer two possible outcomes:
+
+- if the compressed operator is positive, negative-cost round trips are ruled
+
+  out in the formalized model;
+
+- if it is not positive, the converse construction shows that a negative-cost
+
+  round trip exists.
+
+Thus the criterion can be used as a structural rejection test before a model
+
+is accepted for calibration or deployment.
+
+### 3. Construct admissible kernels from positive modes
+
+When a transient kernel admits a representation as a positive mixture of
+
+exponential modes, the proof gives a constructive route to nonnegative impact
+
+work.
+
+For a finite approximation, a practitioner can check that:
+
+- every decay rate is positive;
+
+- every operator-valued mode coefficient is positive semidefinite;
+
+- the mixture weights are nonnegative;
+
+- the resulting integrals satisfy the required finiteness assumptions.
+
+This is often easier and safer than attempting to prove positivity directly
+
+from a complicated time-domain kernel.
+
+### 4. Validate power-law implementations through their mixture representation
+
+The verified power-law result uses an exact Gamma/Laplace representation as a
+
+positive continuous mixture of exponentials.
+
+A numerical implementation can therefore be designed or audited through a
+
+positive exponential approximation. Positivity of the mode weights and
+
+operator coefficients should be preserved during discretization and
+
+calibration.
+
+A fitted approximation that introduces negative mixture weights or indefinite
+
+operator modes may lose the no-price-manipulation guarantee even when its
+
+time-domain fit appears accurate.
+
+### 5. Separate impact cost from unaffected-price risk
+
+The final predictable-strategy theorem separates two issues:
+
+- the impact component, which is shown to be nonnegative under the structural
+
+  kernel assumptions; and
+
+- the unaffected-price component, whose expectation vanishes under the stated
+
+  predictability, conditional mean-zero, and integrability assumptions.
+
+This helps distinguish a genuine defect in the impact model from ordinary
+
+profit or loss caused by exposure to unpredictable market-price movements.
+
+### 6. Use the theorem as part of model governance
+
+The formal result can support a model-review checklist:
+
+- Is the trading strategy class the same as, or narrower than, the formalized
+
+  finite-step predictable class?
+
+- Is the strategy coefficient selected using only currently available
+
+  information?
+
+- Are the required price increments and coefficient-times-increment products
+
+  integrable?
+
+- Is the compressed linear round-trip operator positive?
+
+- Are exponential-mode coefficients positive semidefinite?
+
+- Are mixture weights nonnegative?
+
+- Does numerical approximation preserve these properties?
+
+- Are any nonlinear terms outside the scope of the exact converse clearly
+
+  identified?
+
+Passing these checks does not establish empirical accuracy or execution
+
+quality. It establishes that the specified structural mechanism does not
+
+create the particular negative-cost round trips ruled out by the theorem.
+
 ## What this repository is not
 
 This is not:
 
-- a trading strategy;
+- a trading strategy
 
-- an execution engine;
+- an execution engine
 
-- a calibration package;
+- a calibration package
 
-- evidence that a particular empirical model fits real markets;
+- evidence that a particular empirical model fits real markets
 
-- a guarantee that a deployed trading system cannot lose money;
+- a guarantee that a deployed trading system cannot lose money
 
 - a proof that every power-law cross-impact specification is admissible.
 
@@ -308,15 +448,15 @@ trading steps with:
 
   available when each coefficient is selected;
 
-- integrable price increments;
+- integrable price increments
 
-- conditionally mean-zero price increments;
+- conditionally mean-zero price increments
 
-- explicitly integrable coefficient-times-increment products;
+- explicitly integrable coefficient-times-increment products
 
-- the stated positivity assumptions on the impact operators;
+- the stated positivity assumptions on the impact operators
 
-- the stated finite-dimensional and analytic assumptions;
+- the stated finite-dimensional and analytic assumptions
 
 - the integrability hypotheses required for the continuous power-law mixture.
 
@@ -326,15 +466,15 @@ The exact converse applies to the formalized linear model.
 
 This repository does not prove:
 
-- a general continuous-time stochastic-integral theorem;
+- a general continuous-time stochastic-integral theorem
 
-- a general semimartingale result;
+- a general semimartingale result
 
-- an Itô-integration theorem;
+- an Itô-integration theorem
 
-- a nonlinear power-law converse;
+- a nonlinear power-law converse
 
-- empirical correctness of any particular cross-impact calibration;
+- empirical correctness of any particular cross-impact calibration
 
 - automatic discharge of every analytic or integrability assumption.
 
@@ -352,25 +492,25 @@ Mathlib dependencies.
 
 Verified state:
 
-- complete Lake build: passed;
+- complete Lake build: passed
 
-- build jobs: 8,597;
+- build jobs: 8,597
 
-- direct compilation of the final bridge: passed;
+- direct compilation of the final bridge: passed
 
-- compiler and linter warnings: 0;
+- compiler and linter warnings: 0
 
-- audited Lean source files: 17;
+- audited Lean source files: 17
 
-- expected public declarations reconciled: 17 of 17;
+- expected public declarations reconciled: 17 of 17
 
-- `sorry`: 0;
+- `sorry`: 0
 
-- `admit`: 0;
+- `admit`: 0
 
-- custom axioms: 0;
+- custom axioms: 0
 
-- `opaque` declarations: 0;
+- `opaque` declarations: 0
 
 - custom constants: 0.
 
@@ -382,9 +522,9 @@ The full proof-log-to-Lean reconciliation report is available at:
 
 The repository pins:
 
-- Lean `v4.32.0-rc1`;
+- Lean `v4.32.0-rc1`
 
-- the corresponding Mathlib revision through `lake-manifest.json`;
+- the corresponding Mathlib revision through `lake-manifest.json`
 
 - all project source files required for a clean build.
 
