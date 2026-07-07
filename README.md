@@ -6,103 +6,429 @@ This repository contains a machine-checked Lean 4 development of
 
 no-price-manipulation results for a cross-impact market model.
 
-## Main results
+The central economic question is simple:
 
-- Exact round-trip criterion for the formalized linear stage.
+> Can a trader begin with zero inventory, trade through several assets, return
 
-- Exact necessary-and-sufficient linear no-price-manipulation criterion.
+> to zero inventory, and nevertheless extract guaranteed profit solely because
 
-- Nonnegative work for positive exponential operator modes.
+> of the mathematical structure of the market-impact model?
 
-- Closure under finite positive exponential mixtures.
+An economically admissible impact model should rule out such negative-cost
 
-- Exact Gamma/Laplace representation of a power-law kernel.
+round trips. This repository formalizes conditions under which that form of
 
-- Nonnegative concrete continuous power-law impact work.
+price manipulation is impossible, and also proves a constructive converse for
 
-- Deterministic finite-step martingale bridge.
+the formalized linear model.
 
-- Random finite-step predictable-strategy martingale bridge.
+## Why this problem matters
 
-- Constructive negative-round-trip converse for the linear criterion.
+Trading one asset can affect not only its own price but also the prices of
 
-## Final predictable-strategy theorem
+related assets. This phenomenon is known as cross-impact.
+
+Cross-impact models appear in:
+
+- multi-asset optimal execution;
+
+- transaction-cost modeling;
+
+- portfolio liquidation;
+
+- market simulation;
+
+- execution-algorithm design;
+
+- calibration of transient impact kernels;
+
+- theoretical studies of market stability and admissibility.
+
+A model can fit observed data and still be structurally defective. In
+
+particular, an impact kernel or cross-asset coupling matrix may accidentally
+
+permit a trader to generate profit through a closed trading cycle.
+
+No-price-manipulation is therefore not merely a desirable empirical feature.
+
+It is a mathematical consistency condition on the model itself.
+
+## What is proved
+
+The formalization establishes a chain of results connecting an exact linear
+
+criterion to a concrete continuous power-law impact model.
+
+At a high level, the proof proceeds as follows:
+
+1. Express the cost of a linear round trip through a compressed quadratic
+
+   positivity condition.
+
+2. Prove an exact necessary-and-sufficient no-price-manipulation criterion for
+
+   the formalized linear model.
+
+3. Show that a positive exponential operator mode produces nonnegative work.
+
+4. Extend the result to finite positive mixtures of exponential modes.
+
+5. represent a power-law kernel as a positive continuous mixture of
+
+   exponentials through an exact Gamma/Laplace identity.
+
+6. Transfer the finite-mode positivity result to the concrete continuous
+
+   power-law impact model.
+
+7. Add the unaffected-price contribution and prove that its expected value
+
+   vanishes for deterministic finite-step strategies under martingale
+
+   increments.
+
+8. Extend that bridge to random finite-step predictable strategies under
+
+   explicit measurability and integrability assumptions.
+
+9. Prove a converse for the linear model: if the compressed positivity
+
+   criterion fails, then a negative-cost round trip exists.
+
+The result is therefore not only a sufficient construction. For the
+
+formalized linear stage, the development also identifies the failure mode and
+
+constructs a price-manipulation witness.
+
+## Principal final theorem
 
 The principal final declaration is:
 
-concreteContinuousPowerLaw_predictableNoPriceManipulation
+    concreteContinuousPowerLaw_predictableNoPriceManipulation
 
-It combines zero expected unaffected-price cost for a random finite-step
+It combines two components:
 
-predictable strategy with the verified nonnegative continuous power-law
+- the expected unaffected-price cost is zero for a random finite-step
 
-impact contribution.
+  predictable strategy under conditionally mean-zero price increments; and
 
-## Verified state
+- the verified continuous power-law impact contribution is nonnegative.
 
-- Complete Lake build: passed.
+The conclusion is that expected total execution cost is nonnegative for the
 
-- Build jobs: 8,597.
+formalized finite-step predictable-strategy interface.
 
-- Compiler and linter warnings: 0.
+## Exact linear criterion and converse
 
-- Audited Lean source files: 17.
+The linear portion of the development proves both directions.
 
-- Expected public declarations reconciled: 17 of 17.
+The forward direction shows that the compressed positivity condition rules
 
-- sorry declarations: 0.
+out negative-cost round trips.
 
-- admit declarations: 0.
+The converse shows that when this condition fails, one can construct:
 
-- Custom axioms: 0.
+- a negative compressed witness;
 
-- opaque declarations: 0.
+- a corresponding negative-cost round trip; and
 
-- Custom constants: 0.
+- a formal price-manipulation witness.
 
-The complete reconciliation report is located at:
+This is important because it distinguishes an exact structural criterion from
 
-docs/proof_log_to_lean_reconciliation.md
+a merely convenient sufficient condition.
 
-## Build
+## Why the power-law construction is significant
 
-Install Lean using elan and run:
+Power-law decay is commonly used to represent persistent or slowly decaying
 
-    lake build
+market impact.
 
-To compile the final predictable bridge directly:
+The formal proof does not assert positivity of the power-law kernel by
 
-    lake env lean CrossImpactNoPriceManipulation/PredictableMartingaleBridge.lean
+inspection. Instead, it derives the result through a structural
 
-## Scope
+representation:
 
-The sufficient theorem covers random finite-step predictable strategies with:
+- positive exponential modes are individually admissible;
 
-- strategy coefficients measurable relative to the corresponding information;
+- positive finite mixtures remain admissible;
+
+- the power-law kernel is represented as a positive continuous exponential
+
+  mixture;
+
+- the associated impact work inherits nonnegativity under the stated analytic
+
+  assumptions.
+
+This provides a reusable proof pattern for constructing admissible transient
+
+impact kernels from positive mode decompositions.
+
+## Why formal verification adds value
+
+The purpose of the Lean development is not simply to restate a handwritten
+
+proof in another notation.
+
+Lean checks that:
+
+- every hypothesis is explicit;
+
+- all dimensions and types match;
+
+- positivity assumptions are used where required;
+
+- finite-mixture and continuous-mixture arguments compose correctly;
+
+- the Gamma/Laplace identity is connected to the impact functional;
+
+- the martingale bridge includes the necessary measurability assumptions;
+
+- all required products are integrable;
+
+- the converse constructs an actual negative-cost witness;
+
+- the final theorem depends only on the declared assumptions;
+
+- no proof placeholders or custom logical axioms are present.
+
+These checks are especially valuable in mathematical finance, where an
+
+apparently minor omitted assumption can change whether an expected-cost
+
+argument is valid.
+
+## Intended use cases
+
+This repository can be used as:
+
+### A machine-checkable reference
+
+Researchers can inspect the exact assumptions and theorem statements rather
+
+than relying only on an informal summary.
+
+### A model-design guide
+
+The positivity architecture illustrates how admissible cross-impact kernels
+
+can be built from positive operator modes and positive mixtures.
+
+### A validation target
+
+A proposed linear cross-impact model can be compared against the exact
+
+compressed positivity criterion formalized here.
+
+### A foundation for an academic paper
+
+The repository provides an independently buildable formal artifact supporting
+
+the associated mathematical claims.
+
+### A starting point for further formalization
+
+Possible extensions include broader strategy spaces, additional kernel
+
+families, richer stochastic-process interfaces, and a larger formalized
+
+library for market-impact mathematics.
+
+## What this repository is not
+
+This is not:
+
+- a trading strategy;
+
+- an execution engine;
+
+- a calibration package;
+
+- evidence that a particular empirical model fits real markets;
+
+- a guarantee that a deployed trading system cannot lose money;
+
+- a proof that every power-law cross-impact specification is admissible.
+
+The results apply to the mathematical objects and assumptions explicitly
+
+represented in the Lean development.
+
+## Main verified declarations
+
+| File | Declaration | Role |
+
+|---|---|---|
+
+| `ExactLinearStage.lean` | `exact_roundTrip_criterion` | Exact round-trip cost criterion |
+
+| `ExactLinearStage.lean` | `exact_linear_noPriceManipulation_iff` | Exact linear no-price-manipulation equivalence |
+
+| `ConcreteFiniteExponentialMixture.lean` | `concretePositiveOperatorModeWork_nonnegative` | Nonnegative work for one positive exponential mode |
+
+| `ConcreteFiniteExponentialMixture.lean` | `concreteFiniteExponentialMixtureWork_nonnegative` | Closure under finite positive mixtures |
+
+| `PowerLawGammaClosure.lean` | `powerLawExponentialMixture_eq` | Gamma/Laplace power-law representation |
+
+| `ContinuousConcretePowerLawWork.lean` | `concreteContinuousPowerLawWork_integrable_nonnegative` | Integrable nonnegative continuous power-law work |
+
+| `ContinuousConcretePowerLawWork.lean` | `concreteContinuousPowerLaw_financialNoPriceManipulation` | Financial no-price-manipulation result |
+
+| `DeterministicMartingaleBridge.lean` | `deterministicUnaffectedPriceCost_eq_zero` | Zero expected deterministic unaffected-price cost |
+
+| `DeterministicMartingaleBridge.lean` | `concreteContinuousPowerLaw_martingaleNoPriceManipulation` | Deterministic finite-step martingale bridge |
+
+| `ConverseNegativeRoundTrip.lean` | `exists_negative_compressed_witness` | Negative witness when positivity fails |
+
+| `ConverseNegativeRoundTrip.lean` | `exists_negativeCost_roundTrip_of_compressed_failure` | Negative-cost round trip from criterion failure |
+
+| `ConverseNegativeRoundTrip.lean` | `exists_priceManipulation_of_linearCriterion_failure` | Price-manipulation witness |
+
+| `ConverseNegativeRoundTrip.lean` | `no_negative_roundTrip_iff_compressed_positive` | Exact compressed positivity equivalence |
+
+| `PredictableMartingaleBridge.lean` | `predictableUnaffectedPriceCost_eq_zero` | Zero expected predictable unaffected-price cost |
+
+| `PredictableMartingaleBridge.lean` | `concreteContinuousPowerLaw_predictableNoPriceManipulation` | Final predictable-strategy theorem |
+
+A more detailed declaration map is available at:
+
+    docs/theorem_map.md
+
+## Scope and assumptions
+
+The sufficient predictable-strategy result covers finite collections of
+
+trading steps with:
+
+- random strategy coefficients measurable relative to the information
+
+  available when each coefficient is selected;
 
 - integrable price increments;
 
-- conditionally mean-zero increments;
+- conditionally mean-zero price increments;
 
-- integrable strategy-times-increment products;
+- explicitly integrable coefficient-times-increment products;
 
-- the stated positivity and analytic assumptions for the continuous
+- the stated positivity assumptions on the impact operators;
 
-  power-law impact model.
+- the stated finite-dimensional and analytic assumptions;
+
+- the integrability hypotheses required for the continuous power-law mixture.
 
 The exact converse applies to the formalized linear model.
 
-## Explicit nonclaims
+## Explicit limitations
 
-This repository does not claim:
+This repository does not prove:
 
-- a general continuous-time stochastic integral;
+- a general continuous-time stochastic-integral theorem;
 
-- semimartingale or Ito integration;
+- a general semimartingale result;
+
+- an Itô-integration theorem;
 
 - a nonlinear power-law converse;
 
-- automatic proof of every analytic or integrability hypothesis.
+- empirical correctness of any particular cross-impact calibration;
+
+- automatic discharge of every analytic or integrability assumption.
+
+The finite-step predictable interface captures a meaningful stochastic trading
+
+class without claiming a more general continuous-time result than has actually
+
+been formalized.
+
+## Verification status
+
+The publication repository was independently rebuilt from its pinned Lean and
+
+Mathlib dependencies.
+
+Verified state:
+
+- complete Lake build: passed;
+
+- build jobs: 8,597;
+
+- direct compilation of the final bridge: passed;
+
+- compiler and linter warnings: 0;
+
+- audited Lean source files: 17;
+
+- expected public declarations reconciled: 17 of 17;
+
+- `sorry`: 0;
+
+- `admit`: 0;
+
+- custom axioms: 0;
+
+- `opaque` declarations: 0;
+
+- custom constants: 0.
+
+The full proof-log-to-Lean reconciliation report is available at:
+
+    docs/proof_log_to_lean_reconciliation.md
+
+## Reproducibility
+
+The repository pins:
+
+- Lean `v4.32.0-rc1`;
+
+- the corresponding Mathlib revision through `lake-manifest.json`;
+
+- all project source files required for a clean build.
+
+Install Lean through `elan`, then run:
+
+    lake exe cache get
+
+    lake build
+
+To compile the final predictable bridge directly after the library build:
+
+    lake env lean CrossImpactNoPriceManipulation/PredictableMartingaleBridge.lean
+
+## Repository structure
+
+- `CrossImpactNoPriceManipulation/` — Lean source modules.
+
+- `CrossImpactNoPriceManipulation.lean` — root import file.
+
+- `docs/theorem_map.md` — theorem and declaration map.
+
+- `docs/proof_log_to_lean_reconciliation.md` — final verification audit.
+
+- `CITATION.cff` — citation metadata.
+
+- `RELEASE_NOTES.md` — release summary.
+
+- `lakefile.toml` — Lake project configuration.
+
+- `lake-manifest.json` — pinned dependency manifest.
+
+- `lean-toolchain` — pinned Lean toolchain.
+
+## Citation and archival record
+
+Archived release DOI:
+
+    10.5281/zenodo.21250432
+
+Citation metadata is provided in `CITATION.cff`.
+
+GitHub repository:
+
+    https://github.com/cadottea/lean-cross-impact-no-price-manipulation
 
 ## License
 
