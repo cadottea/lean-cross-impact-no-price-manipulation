@@ -15,7 +15,7 @@ jobs:
       - uses: leanprover/lean-action@v1
       - name: Verify no sorry in source
         run: |
-          if grep -rn "sorry" --include='*.lean' . ; then
+          if grep -rn "sorry" --include='*.lean' --exclude-dir=.lake . ; then
             echo "::error::Found 'sorry' in Lean source"
             exit 1
           fi
