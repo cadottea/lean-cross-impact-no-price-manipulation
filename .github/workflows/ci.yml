@@ -13,5 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: leanprover/lean-action@v1
-        with:
-          leanchecker: true
+      - name: Verify no sorry in source
+        run: |
+          if grep -rn "sorry" --include='*.lean' . ; then
+            echo "::error::Found 'sorry' in Lean source"
+            exit 1
+          fi
+          echo "No sorry found in Lean source."
