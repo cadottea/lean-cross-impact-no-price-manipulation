@@ -570,7 +570,20 @@ GitHub repository:
 
     https://github.com/cadottea/lean-cross-impact-no-price-manipulation
 
+## Related work
+
+The positivity architecture formalized here builds directly on established
+results in the market-impact literature, including Alfonsi, Klöck & Schied;
+Schneider & Lillo; and Rosenbaum & Tomas. This repository's contribution is a
+full Lean 4 machine verification of that theorem chain, not an original
+economic result.
+
+An open extension: Schneider & Lillo state an open question for singular
+power-law nonlinear kernels. A narrower, related open question is posed in
+Hey, Mastromatteo & Muhle-Karbe (Section 6.3), concerning pairwise-versus-
+global positivity for such kernels. Extending the verified framework toward
+that question is the current direction of this project.
+
 ## License
 
 Apache License 2.0.
-
