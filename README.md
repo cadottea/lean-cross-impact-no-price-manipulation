@@ -588,3 +588,11 @@ that question is the current direction of this project.
 ## License
 
 Apache License 2.0.
+
+---
+
+## See also
+
+- [`quantlib-heston-calibration-stress-test`](https://github.com/cadottea/quantlib-heston-calibration-stress-test) — Heston calibration under hostile initialization — ~15.7x held-out RMSE reduction vs. plain LM, validated across 36+ seed/regime/engine combos.
+- [`qcl-native-pack-001`](https://github.com/cadottea/qcl-native-pack-001) — Audited, Lean-compatible engine package for QuantConnect/Lean research workflows (contact-gated).
+- [`whisper-decoder-control-basin`](https://github.com/cadottea/whisper-decoder-control-basin) — Decoder-scoring intervention for whisper.cpp — 10-22% relative WER reduction, cross-model validated.
