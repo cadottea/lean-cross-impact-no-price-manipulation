@@ -1,4 +1,5 @@
 # Lean Verification of Cross-Impact No-Price-Manipulation
+[![CI](https://github.com/cadottea/lean-cross-impact-no-price-manipulation/actions/workflows/ci.yml/badge.svg)](https://github.com/cadottea/lean-cross-impact-no-price-manipulation/actions/workflows/ci.yml)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21250432.svg)](https://doi.org/10.5281/zenodo.21250432)
 
